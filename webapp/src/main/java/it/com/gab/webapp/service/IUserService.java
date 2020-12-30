@@ -22,4 +22,6 @@ public interface IUserService {
 	public void salvaUtenti(MultipartFile file) throws Exception ;
 	
 	public List<User> getAllUsers()  throws Exception ;
+	
+	public List<User> getUsersFromFile(MultipartFile file) throws Exception;
 }

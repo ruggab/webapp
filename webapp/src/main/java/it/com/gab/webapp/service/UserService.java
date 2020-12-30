@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,14 +30,12 @@ import it.present.daspoCore.utilities.HashBuilder;
 
 @Service
 public class UserService implements IUserService {
-	
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	private final Path dirLocation;
 
-	
 	@Autowired
 	public UserService(FileUploadProperties fileUploadProperties) {
 		this.dirLocation = Paths.get(fileUploadProperties.getLocation()).toAbsolutePath().normalize();
@@ -52,7 +51,7 @@ public class UserService implements IUserService {
 			ex.printStackTrace();
 		}
 	}
- 
+
 	@Override
 	public String saveFile(MultipartFile file) {
 		// TODO Auto-generated method stub
@@ -61,7 +60,6 @@ public class UserService implements IUserService {
 			fileName = file.getOriginalFilename();
 			Path dfile = this.dirLocation.resolve(fileName);
 			Files.copy(file.getInputStream(), dfile, StandardCopyOption.REPLACE_EXISTING);
-		
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,7 +68,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public Resource loadFile(String fileName)  {
+	public Resource loadFile(String fileName) {
 		// TODO Auto-generated method stub
 		Resource resource = null;
 		try {
@@ -87,13 +85,13 @@ public class UserService implements IUserService {
 		}
 		return resource;
 	}
-	
+
 	@Transactional
 	public void salvaUtenti(MultipartFile file) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 		try {
-			InputStream inputStream =  new BufferedInputStream(file.getInputStream());
+			InputStream inputStream = new BufferedInputStream(file.getInputStream());
 			List<SchemaCsv> listCsv = GenericUtils.read(inputStream);
 			for (Iterator iterator = listCsv.iterator(); iterator.hasNext();) {
 				SchemaCsv schemaCsv = (SchemaCsv) iterator.next();
@@ -112,25 +110,53 @@ public class UserService implements IUserService {
 				} else {
 					hash = hash + HashBuilder.costruisciHash(schemaCsv.getCognome().toUpperCase(), schemaCsv.getNome().toUpperCase(), schemaCsv.getData().toUpperCase(), schemaCsv.getSesso().toUpperCase(), schemaCsv.getNazione().toUpperCase(), schemaCsv.getComune().toUpperCase(), schemaCsv.getProvincia().toUpperCase());
 				}
-				
+
 				user.setHash(hash);
 				userRepository.save(user);
 			}
-			
-		
-
 		} catch (Exception e) {
 			throw e;
 		}
-		
+
 	}
-	
+
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
 
-	
-	
-	
-	
+	public List<User> getUsersFromFile(MultipartFile file) throws Exception {
+		// TODO Auto-generated method stub
+		List<User> users = new ArrayList<User>();
+		try {
+			InputStream inputStream = new BufferedInputStream(file.getInputStream());
+			List<SchemaCsv> listCsv = GenericUtils.read(inputStream);
+			for (Iterator iterator = listCsv.iterator(); iterator.hasNext();) {
+				SchemaCsv schemaCsv = (SchemaCsv) iterator.next();
+				User user = new User();
+				user.setTessera(schemaCsv.getTessera());
+				user.setCognome(schemaCsv.getCognome());
+				user.setComune(schemaCsv.getComune());
+				user.setData(schemaCsv.getData());
+				user.setNazione(schemaCsv.getNazione());
+				user.setNome(schemaCsv.getNome());
+				user.setProvincia(schemaCsv.getProvincia());
+				user.setSesso(schemaCsv.getSesso());
+				String hash = "";
+				if (StringUtils.isEmpty(schemaCsv.getComune()) && StringUtils.isEmpty(schemaCsv.getProvincia())) {
+					hash = hash + HashBuilder.costruisciHash(schemaCsv.getCognome().toUpperCase(), schemaCsv.getNome().toUpperCase(), schemaCsv.getData().toUpperCase(), schemaCsv.getSesso().toUpperCase(), schemaCsv.getNazione().toUpperCase(), "", "");
+				} else {
+					hash = hash + HashBuilder.costruisciHash(schemaCsv.getCognome().toUpperCase(), schemaCsv.getNome().toUpperCase(), schemaCsv.getData().toUpperCase(), schemaCsv.getSesso().toUpperCase(), schemaCsv.getNazione().toUpperCase(), schemaCsv.getComune().toUpperCase(), schemaCsv.getProvincia().toUpperCase());
+				}
+
+				user.setHash(hash);
+				users.add(user);
+			}
+			return users;
+
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+
 }

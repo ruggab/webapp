@@ -44,5 +44,19 @@ public class UserController {
 
 	}
 
+	
+	@PostMapping("/importfile")
+	public List<User> getUserFromFile(@RequestParam("file") MultipartFile file) throws Exception, ResourceNotFoundException {
+		try {
+			List<User> list =  userService.getUsersFromFile(file);
+			return list;
+		} catch (ResourceNotFoundException re) {
+			throw re;
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+
    
 }
