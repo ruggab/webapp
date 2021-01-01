@@ -25,7 +25,7 @@ import it.com.gab.webapp.entity.User;
 import it.com.gab.webapp.repository.UserRepository;
 import it.com.gab.webapp.utils.FileUploadProperties;
 import it.com.gab.webapp.utils.GenericUtils;
-import it.com.gab.webapp.utils.SchemaCsv;
+import it.com.gab.webapp.utils.UserCsv;
 import it.present.daspoCore.utilities.HashBuilder;
 
 @Service
@@ -92,9 +92,9 @@ public class UserService implements IUserService {
 
 		try {
 			InputStream inputStream = new BufferedInputStream(file.getInputStream());
-			List<SchemaCsv> listCsv = GenericUtils.read(inputStream);
+			List<UserCsv> listCsv = GenericUtils.readUsers(inputStream);
 			for (Iterator iterator = listCsv.iterator(); iterator.hasNext();) {
-				SchemaCsv schemaCsv = (SchemaCsv) iterator.next();
+				UserCsv schemaCsv = (UserCsv) iterator.next();
 				User user = new User();
 				user.setTessera(schemaCsv.getTessera());
 				user.setCognome(schemaCsv.getCognome());
@@ -129,9 +129,9 @@ public class UserService implements IUserService {
 		List<User> users = new ArrayList<User>();
 		try {
 			InputStream inputStream = new BufferedInputStream(file.getInputStream());
-			List<SchemaCsv> listCsv = GenericUtils.read(inputStream);
+			List<UserCsv> listCsv = GenericUtils.readUsers(inputStream);
 			for (Iterator iterator = listCsv.iterator(); iterator.hasNext();) {
-				SchemaCsv schemaCsv = (SchemaCsv) iterator.next();
+				UserCsv schemaCsv = (UserCsv) iterator.next();
 				User user = new User();
 				user.setTessera(schemaCsv.getTessera());
 				user.setCognome(schemaCsv.getCognome());

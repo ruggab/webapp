@@ -25,17 +25,22 @@ public class GenericUtils {
 	public static SimpleDateFormat sdf = new SimpleDateFormat();
 
 	static final Pattern NUMBER_PATTERN = Pattern.compile("\\d+");
+	
+	
+	
+	
+	
 
-	public static List<SchemaCsv> read(InputStream stream) {
+	public static List<UserCsv> readUsers(InputStream stream) {
 		try {
 
 			InputStreamReader ireader = new InputStreamReader(stream, "UTF-8");
 			CSVReader reader = new CSVReader(ireader, ';', '"', 1);
-			ColumnPositionMappingStrategy<SchemaCsv> strat = new ColumnPositionMappingStrategy<SchemaCsv>();
-			strat.setType(SchemaCsv.class);
-			strat.setColumnMapping(SchemaCsv.COLUMNS);
-			CsvToBean<SchemaCsv> csv = new CsvToBean<SchemaCsv>();
-			List<SchemaCsv> list = csv.parse(strat, reader);
+			ColumnPositionMappingStrategy<UserCsv> strat = new ColumnPositionMappingStrategy<UserCsv>();
+			strat.setType(UserCsv.class);
+			strat.setColumnMapping(UserCsv.COLUMNS);
+			CsvToBean<UserCsv> csv = new CsvToBean<UserCsv>();
+			List<UserCsv> list = csv.parse(strat, reader);
 
 			return list;
 
@@ -43,6 +48,25 @@ public class GenericUtils {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static List<AvvocatoCsv> readAvvocatos(InputStream stream) {
+		try {
+
+			InputStreamReader ireader = new InputStreamReader(stream, "UTF-8");
+			CSVReader reader = new CSVReader(ireader, ';', '"', 1);
+			ColumnPositionMappingStrategy<AvvocatoCsv> strat = new ColumnPositionMappingStrategy<AvvocatoCsv>();
+			strat.setType(AvvocatoCsv.class);
+			strat.setColumnMapping(AvvocatoCsv.AvvocatoCbill);
+			CsvToBean<AvvocatoCsv> csv = new CsvToBean<AvvocatoCsv>();
+			List<AvvocatoCsv> list = csv.parse(strat, reader);
+
+			return list;
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 
 	public static Date fromStrigToDate(String s) throws Exception {
 		Date date = null;
@@ -64,13 +88,13 @@ public class GenericUtils {
 			String fileNameOut = "C:\\Umberto\\anagraficaCodificata.csv";
 			//
 			FileInputStream fis = new FileInputStream(fileNameIn);
-			List<SchemaCsv> listCsv = read(fis);
+			List<UserCsv> listCsv = readUsers(fis);
 			// HashBuilder.costruisciHash(cognome, nome, data, sesso,nazioneNascitaEstera, comune, provincia);
 			File fileOut = new File(fileNameOut);
 			FileWriter fr = new FileWriter(fileOut, true);
 			fr.write("tessera;nome;cognome;data;sesso;nazione;provincia;comune;hash\n");
 			for (Iterator iterator = listCsv.iterator(); iterator.hasNext();) {
-				SchemaCsv schemaCsv = (SchemaCsv) iterator.next();
+				UserCsv schemaCsv = (UserCsv) iterator.next();
 				//
 				String riga = schemaCsv.getTessera() + ";";
 				riga = riga + schemaCsv.getNome() + ";";
@@ -98,5 +122,35 @@ public class GenericUtils {
 		}
 
 	}
+	
+	public static String getIdAlbo(String tipoAlbo, String cassazionista) {
+		String id = "";
+		if (TipoProfessionista.AVV_ORD_CASS.getTipoAlbo().equals(tipoAlbo) && cassazionista.equalsIgnoreCase("Si")) {
+			return TipoProfessionista.AVV_ORD_CASS.getIdAlbo();
+		}
+		if (TipoProfessionista.AVV_SPE_CASS.getTipoAlbo().equals(tipoAlbo) && cassazionista.equalsIgnoreCase("Si")) {
+			return TipoProfessionista.AVV_SPE_CASS.getIdAlbo();
+		}
+		if (TipoProfessionista.AVV_ORD.getTipoAlbo().equals(tipoAlbo)) {
+			return TipoProfessionista.AVV_ORD.getIdAlbo();
+		}
+		if (TipoProfessionista.AVV_PRO.getTipoAlbo().equals(tipoAlbo)) {
+			return TipoProfessionista.AVV_PRO.getIdAlbo();
+		}
+		if (TipoProfessionista.AVV_SPE.getTipoAlbo().equals(tipoAlbo)) {
+			return TipoProfessionista.AVV_SPE.getIdAlbo();
+		}
+		if (TipoProfessionista.AVV_STA.getTipoAlbo().equals(tipoAlbo)) {
+			return TipoProfessionista.AVV_STA.getIdAlbo();
+		}
+		if (TipoProfessionista.AVV_PAT.getTipoAlbo().equals(tipoAlbo)) {
+			return TipoProfessionista.AVV_PAT.getIdAlbo();
+		}
+		if (TipoProfessionista.AVV_SEN_PAT.getTipoAlbo().equals(tipoAlbo)) {
+			return TipoProfessionista.AVV_SEN_PAT.getIdAlbo();
+		}
+		return id;
+	}
+
 
 }

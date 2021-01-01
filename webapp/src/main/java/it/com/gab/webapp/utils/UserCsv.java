@@ -1,6 +1,6 @@
 package it.com.gab.webapp.utils;
 
-public class SchemaCsv {
+public class UserCsv {
 
 	public static final String[] COLUMNS = { "tessera", "cognome", "nome", "data", "sesso", "nazione", "provincia", "comune" };
 

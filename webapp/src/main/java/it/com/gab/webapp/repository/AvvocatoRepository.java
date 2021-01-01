@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import it.com.gab.webapp.entity.AvvocatoCbill;
+import it.com.gab.webapp.entity.Avvocato;
 
 
 @Repository
-public interface AvvocatoCbillRepository extends JpaSpecificationExecutor<AvvocatoCbill>, JpaRepository<AvvocatoCbill, Integer> {
+public interface AvvocatoRepository extends JpaSpecificationExecutor<Avvocato>, JpaRepository<Avvocato, Integer> {
 	
 	
-	List<AvvocatoCbill> findByCodiceFiscale(String codFiscale);
+	List<Avvocato> findByCodiceFiscale(String codFiscale);
 	
 	
 	@Query(value = "SELECT a.* FROM avvocato_cbill a "+  
@@ -22,14 +22,14 @@ public interface AvvocatoCbillRepository extends JpaSpecificationExecutor<Avvoca
 			"and a.data_invio_pec is null "+
 			"order by a.id_uni_prof "+
 			"limit 0, ?1 ", nativeQuery=true )
-	public List<AvvocatoCbill> findAvvocatoCbillByPecNotSend(Integer p1) throws Exception;
+	public List<Avvocato> findAvvocatoCbillByPecNotSend(Integer p1) throws Exception;
 	
 	@Query(value = "SELECT a.* FROM avvocato_cbill a "+  
 			"where 1 = 1 " + 
 			"and (trim(a.pec) <> '' and  a.pec is not null) "+
 			"and a.data_invio_pec is null "+
 			"order by a.id_uni_prof ", nativeQuery=true )
-	public List<AvvocatoCbill> findAvvocatoCbillByPecNotSend() throws Exception;
+	public List<Avvocato> findAvvocatoCbillByPecNotSend() throws Exception;
 	
 	@Query(value = "SELECT count(*) FROM avvocato_cbill a "+  
 			"where 1 = 1 " + 
@@ -46,7 +46,7 @@ public interface AvvocatoCbillRepository extends JpaSpecificationExecutor<Avvoca
 			"and a.data_invio_mail is null "+
 			"order by a.id_uni_prof "+
 			"limit 0, ?1 ", nativeQuery=true )
-	public List<AvvocatoCbill> findAvvocatoCbillByMailNotSend(Integer p1) throws Exception;
+	public List<Avvocato> findAvvocatoCbillByMailNotSend(Integer p1) throws Exception;
 	
 	@Query(value = "SELECT a.* FROM avvocato_cbill a "+  
 			"where 1 = 1 " + 
@@ -54,7 +54,7 @@ public interface AvvocatoCbillRepository extends JpaSpecificationExecutor<Avvoca
 			"and (trim(a.mail) <> '' and  a.mail is not null) "+
 			"and a.data_invio_mail is null "+
 			"order by a.id_uni_prof ", nativeQuery=true )
-	public List<AvvocatoCbill> findAvvocatoCbillByMailNotSend() throws Exception;
+	public List<Avvocato> findAvvocatoCbillByMailNotSend() throws Exception;
 	
 	@Query(value = "SELECT count(*) FROM avvocato_cbill a "+  
 			"where 1 = 1 " + 
