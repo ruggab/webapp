@@ -19,6 +19,7 @@ import it.com.gab.webapp.repository.AvvocatoRepository;
 import it.com.gab.webapp.utils.AvvocatoCsv;
 import it.com.gab.webapp.utils.GenericUtils;
 import it.com.gab.webapp.utils.MailerUtility;
+import it.com.gab.webapp.utils.Properties;
 
 @Service
 @Transactional
@@ -97,7 +98,7 @@ public class AvvocatoServiceImpl implements AvvocatoService {
 		return list;
 	}
 
-	public void saveNewAvvocatoCbill(MultipartFile file) throws Exception {
+	public void saveNewAvvocatoCbill(String anno, MultipartFile file) throws Exception {
 
 		try {
 			InputStream inputStream = new BufferedInputStream(file.getInputStream());
@@ -105,7 +106,7 @@ public class AvvocatoServiceImpl implements AvvocatoService {
 			BigInteger intCodSia = GenericUtils.trasformaCodSia();
 			for (Iterator iterator = listCsv.iterator(); iterator.hasNext();) {
 				AvvocatoCsv schemaCsv = (AvvocatoCsv) iterator.next();
-				schemaCsv = GenericUtils.creaCBILLs(schemaCsv, intCodSia);
+				schemaCsv = GenericUtils.creaCBILLs(anno, schemaCsv, intCodSia);
 				Avvocato avvocatoCbill = new Avvocato();
 				try {
 					String progressivo = String.format("%05d", new Integer(schemaCsv.getProgressivo()));
@@ -149,9 +150,9 @@ public class AvvocatoServiceImpl implements AvvocatoService {
 	
 	public void invia(String tipoInvio, String numMailPecSel) throws Exception {
 		logger.debug("INVIA");
-		
-		String oggettoMail = "PAGAMENTO QUOTA ANNUALE 2020";
-		String ambiente = "svil";
+
+		String oggettoMail = Properties.oggetto;
+		String ambiente =  Properties.ambiente;
 
 		Integer limit = null;
 		if (!numMailPecSel.equals("ALL")) {
@@ -199,8 +200,8 @@ public class AvvocatoServiceImpl implements AvvocatoService {
 						if (ambiente.equals("prod")) {
 							mailer.addRecipient(avvocatoCbill.getMail());
 						} else {
-							String mailTo = "ruggzan@gmail.com";
-							//String mailTo = "roberta.rossetti@libero.it";
+							//String mailTo = "ruggzan@gmail.com";
+							String mailTo = "roberta.rossetti@libero.it";
 							mailer.addRecipient(mailTo);
 						}
 					}

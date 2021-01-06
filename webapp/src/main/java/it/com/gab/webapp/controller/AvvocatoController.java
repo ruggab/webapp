@@ -17,6 +17,7 @@ import it.com.gab.webapp.exception.ResourceNotFoundException;
 import it.com.gab.webapp.model.InvioFormMail;
 import it.com.gab.webapp.model.InvioFormPec;
 import it.com.gab.webapp.service.AvvocatoService;
+import it.com.gab.webapp.utils.Properties;
 
 @RestController
 @RequestMapping("/api")
@@ -26,18 +27,16 @@ public class AvvocatoController {
 	@Autowired
 	AvvocatoService avvocatoService;
 
-    @GetMapping("/avvocati")
-    public List<Avvocato> getAvvocati() {
-    	List<Avvocato> avvocatos = avvocatoService.findAllAvvocatoCbills();
-        return avvocatos;
-    }
-    
-    
+	@GetMapping("/avvocati")
+	public List<Avvocato> getAvvocati() {
+		List<Avvocato> avvocatos = avvocatoService.findAllAvvocatoCbills();
+		return avvocatos;
+	}
 
 	@PostMapping("/importAvvocati")
 	public void importAvvocati(@RequestParam("file") MultipartFile file) throws Exception, ResourceNotFoundException {
 		try {
-			avvocatoService.saveNewAvvocatoCbill(file);
+			avvocatoService.saveNewAvvocatoCbill(Properties.anno, file);
 		} catch (ResourceNotFoundException re) {
 			throw re;
 		} catch (Exception e) {
@@ -47,13 +46,11 @@ public class AvvocatoController {
 	}
 
 	@GetMapping("/numPecDaInviare")
-    public Long getNumPecDaInviare() throws Exception {
-    	Long avvocatos = avvocatoService.countAvvocatoCbillByPecNonInviata();
-        return avvocatos;
-    }
+	public Long getNumPecDaInviare() throws Exception {
+		Long avvocatos = avvocatoService.countAvvocatoCbillByPecNonInviata();
+		return avvocatos;
+	}
 
-	
-	
 	@PostMapping("/inviaPec")
 	public void inviaPec(@RequestBody InvioFormPec invioForm) throws Exception, ResourceNotFoundException {
 		try {
@@ -63,16 +60,13 @@ public class AvvocatoController {
 		}
 
 	}
-	
-	
-	@GetMapping("/numMailDaInviare")
-    public Long getNumMailDaInviare() throws Exception {
-    	Long avvocatos = avvocatoService.countAvvocatoCbillByMailNonInviata();
-        return avvocatos;
-    }
 
-	
-	
+	@GetMapping("/numMailDaInviare")
+	public Long getNumMailDaInviare() throws Exception {
+		Long avvocatos = avvocatoService.countAvvocatoCbillByMailNonInviata();
+		return avvocatos;
+	}
+
 	@PostMapping("/inviaMail")
 	public void inviaMail(@RequestBody InvioFormMail invioForm) throws Exception, ResourceNotFoundException {
 		try {
@@ -82,6 +76,5 @@ public class AvvocatoController {
 		}
 
 	}
-	
-   
+
 }

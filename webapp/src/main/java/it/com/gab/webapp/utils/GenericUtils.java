@@ -299,12 +299,12 @@ public class GenericUtils {
 	public final static String RATA_Prima = "2";
 	public final static String RATA_Seconda = "3";
 
-	public static AvvocatoCsv creaCBILLs(AvvocatoCsv schemaCsv, BigInteger codSia) {
+	public static AvvocatoCsv creaCBILLs(String anno, AvvocatoCsv schemaCsv, BigInteger codSia) {
 
 		try {
-			BigInteger identBollettaUnica = creaIdentificativoBolletta(schemaCsv, RATA_Annuale);
-			BigInteger identBollettaPrima = creaIdentificativoBolletta(schemaCsv, RATA_Prima);
-			BigInteger identBollettaSec = creaIdentificativoBolletta(schemaCsv, RATA_Seconda);
+			BigInteger identBollettaUnica = creaIdentificativoBolletta(anno, schemaCsv, RATA_Annuale);
+			BigInteger identBollettaPrima = creaIdentificativoBolletta(anno, schemaCsv, RATA_Prima);
+			BigInteger identBollettaSec = creaIdentificativoBolletta(anno, schemaCsv, RATA_Seconda);
 
 			String cbillUnica = creaCBILL(identBollettaUnica, codSia, schemaCsv.getQuotaUnica());
 			String cbillPrimaRata = creaCBILL(identBollettaPrima, codSia, schemaCsv.getQuotaRata1());
@@ -364,13 +364,12 @@ public class GenericUtils {
 		return cbill;
 	}
 	
-	public static BigInteger creaIdentificativoBolletta(AvvocatoCsv schemaCsv, String rata) throws ParseException {
+	public static BigInteger creaIdentificativoBolletta(String anno, AvvocatoCsv schemaCsv, String rata) throws ParseException {
 		BigInteger ret = null;
 		try {
 			String idBolletta = "";
 			// anno
 			Calendar calendar = GregorianCalendar.getInstance();
-			String anno = calendar.get(Calendar.YEAR) + "";
 			// Albo
 			String idAlbo = getIdAlbo(schemaCsv.getTipoAlbo(), schemaCsv.getCassazionista());
 			// dd/MM/yyyy

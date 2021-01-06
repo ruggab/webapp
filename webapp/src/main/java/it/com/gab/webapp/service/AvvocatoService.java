@@ -12,7 +12,7 @@ public interface AvvocatoService {
 
 	public void saveNewAvvocatoCbill(Avvocato avvocatoCbill) throws Exception;
 
-	public void saveNewAvvocatoCbill(MultipartFile file) throws Exception;
+	public void saveNewAvvocatoCbill(String anno, MultipartFile file) throws Exception;
 
 	public long countAvvocatoCbillByPecNonInviata() throws Exception;
 
