@@ -6,16 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.com.gab.webapp.entity.Avvocato;
-import it.com.gab.webapp.entity.User;
 import it.com.gab.webapp.exception.ResourceNotFoundException;
+import it.com.gab.webapp.model.InvioFormMail;
+import it.com.gab.webapp.model.InvioFormPec;
 import it.com.gab.webapp.service.AvvocatoService;
-import it.com.gab.webapp.service.UserService;
 
 @RestController
 @RequestMapping("/api")
@@ -45,19 +46,42 @@ public class AvvocatoController {
 
 	}
 
-	
-//	@PostMapping("/importfile")
-//	public List<Avvocato> getAvvocatiFromFile(@RequestParam("file") MultipartFile file) throws Exception, ResourceNotFoundException {
-//		try {
-//			List<Avvocato> list =  avvocatoService.getAvvocatosFromFile(file);
-//			return list;
-//		} catch (ResourceNotFoundException re) {
-//			throw re;
-//		} catch (Exception e) {
-//			throw e;
-//		}
-//
-//	}
+	@GetMapping("/numPecDaInviare")
+    public Long getNumPecDaInviare() throws Exception {
+    	Long avvocatos = avvocatoService.countAvvocatoCbillByPecNonInviata();
+        return avvocatos;
+    }
 
+	
+	
+	@PostMapping("/inviaPec")
+	public void inviaPec(@RequestBody InvioFormPec invioForm) throws Exception, ResourceNotFoundException {
+		try {
+			avvocatoService.invia("pec", invioForm.getNumPecSel());
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+	
+	
+	@GetMapping("/numMailDaInviare")
+    public Long getNumMailDaInviare() throws Exception {
+    	Long avvocatos = avvocatoService.countAvvocatoCbillByMailNonInviata();
+        return avvocatos;
+    }
+
+	
+	
+	@PostMapping("/inviaMail")
+	public void inviaMail(@RequestBody InvioFormMail invioForm) throws Exception, ResourceNotFoundException {
+		try {
+			avvocatoService.invia("mail", invioForm.getNumMailSel());
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+	
    
 }

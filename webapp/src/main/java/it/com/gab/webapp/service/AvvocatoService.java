@@ -14,9 +14,9 @@ public interface AvvocatoService {
 
 	public void saveNewAvvocatoCbill(MultipartFile file) throws Exception;
 
-	public long countAvvocatoCbillByPecInviata() throws Exception;
+	public long countAvvocatoCbillByPecNonInviata() throws Exception;
 
-	public long countAvvocatoCbillByMailInviata() throws Exception;
+	public long countAvvocatoCbillByMailNonInviata() throws Exception;
 
 	public abstract long countAllAvvocatoCbills();
 
@@ -33,5 +33,9 @@ public interface AvvocatoService {
 	public List<Avvocato> findAvvocatoCbillByPecNotSend(Integer limit) throws Exception;
 
 	public List<Avvocato> findAvvocatoCbillByMailNotSend(Integer limit) throws Exception;
+	
+	public void invia(String tipoInvio, String numPecSel) throws Exception;
+	
+	
 
 }
