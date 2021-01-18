@@ -40,7 +40,7 @@ public class GenericUtils {
 		try {
 
 			InputStreamReader ireader = new InputStreamReader(stream, "UTF-8");
-			CSVReader reader = new CSVReader(ireader, ';', '"', 1);
+			CSVReader reader = new CSVReader(ireader, ',', '"', 1);
 			ColumnPositionMappingStrategy<UserCsv> strat = new ColumnPositionMappingStrategy<UserCsv>();
 			strat.setType(UserCsv.class);
 			strat.setColumnMapping(UserCsv.COLUMNS);

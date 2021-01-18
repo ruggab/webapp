@@ -2,7 +2,7 @@ package it.com.gab.webapp.utils;
 
 public class UserCsv {
 
-	public static final String[] COLUMNS = { "tessera", "cognome", "nome", "data", "sesso", "nazione", "provincia", "comune" };
+	public static final String[] COLUMNS = { "tessera", "datafine","sesso","cognome", "nome", "data",  "nazione", "provincia", "comune" };
 
 	private String tessera;
 	private String nome;
@@ -12,6 +12,7 @@ public class UserCsv {
 	private String provincia;
 	private String nazione;
 	private String sesso;
+	private String datafine;
 
 	public String getNome() {
 		return nome;
@@ -77,6 +78,14 @@ public class UserCsv {
 
 	public void setTessera(String tessera) {
 		this.tessera = tessera;
+	}
+
+	public String getDatafine() {
+		return datafine;
+	}
+
+	public void setDatafine(String datafine) {
+		this.datafine = datafine;
 	}
 	
 	
